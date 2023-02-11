@@ -1,19 +1,21 @@
 local utils = require("utils.index")
 local M = {}
 
-local function remove_labels(text, symbol_table)
-	local current_line_with_code = 0
-	local without_labels = {}
-	for _, l in pairs(text) do
-		if string.sub(l, 1, 1) == "(" then
-			local label_name = string.sub(l, 2, #l - 1)
-			symbol_table:add_label(label_name, current_line_with_code)
-		else
-			table.insert(without_labels, l)
-			current_line_with_code = current_line_with_code + 1
+local function remove_labels(symbol_table)
+	return function(text)
+		local current_line_with_code = 0
+		local without_labels = {}
+		for _, l in pairs(text) do
+			if string.sub(l, 1, 1) == "(" then
+				local label_name = string.sub(l, 2, #l - 1)
+				symbol_table:add_label(label_name, current_line_with_code)
+			else
+				table.insert(without_labels, l)
+				current_line_with_code = current_line_with_code + 1
+			end
 		end
+		return without_labels
 	end
-	return without_labels
 end
 
 local function remove_comentaries(text)
@@ -65,14 +67,14 @@ function M.open_file(name, symbol_table)
 	if not file then
 		return nil
 	end
-	local fns = {
+	local functions = {
 		trim_lines,
 		remove_empty_lines,
 		remove_comentaries,
 		remove_whitespaces,
+		remove_labels(symbol_table),
 	}
-	local r = utils.pipe(fns, { file:lines() })
-	return remove_labels(r, symbol_table)
+	return utils.pipe(functions, { file:lines() })
 end
 
 function M.save_file(name, text)
