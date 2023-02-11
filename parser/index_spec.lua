@@ -1,6 +1,8 @@
 local parser = require("parser.index")
 local AInstruction = require("parser.a-instruction")
 local CInstruction = require("parser.c-instruction")
+local ATranslator = require("translator.a-instruction")
+local CTranslator = require("translator.c-insctruction")
 
 local tests = {
 	"@10",
@@ -11,11 +13,11 @@ local tests = {
 }
 
 local result = {
-	AInstruction.new("@10"),
-	CInstruction.new("D=M"),
-	AInstruction.new("@fim"),
-	AInstruction.new("@FIM"),
-	AInstruction.new("D=M;JQE"),
+	ATranslator.new(AInstruction.new("@10")),
+	CTranslator.new(CInstruction.new("D=M")),
+	ATranslator.new(AInstruction.new("@fim")),
+	ATranslator.new(AInstruction.new("@FIM")),
+	CTranslator.new(CInstruction.new("D=M;JQE")),
 }
 
 describe("Parser", function()
