@@ -23,7 +23,6 @@ end
 
 function SymbolTable.get(self, key)
 	local value = self.table[key]
-	print("get", key, value)
 	if not value then
 		value = self.next_empty_variable_spot
 		self.table[key] = value

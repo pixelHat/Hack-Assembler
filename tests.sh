@@ -1,5 +1,8 @@
 #!/bin/bash
 
+red="\033[0;31m"
+green="\033[0;32m"
+
 mkdir -p ./tests/tmp
 
 assembler_file=main.lua
@@ -15,3 +18,9 @@ do
 done
 
 diff "./tests/hack" "./tests/tmp"
+
+if [ $? == 0 ]; then
+  echo -e "${green} All tests passed."
+else
+  echo -e "${red} Some tests failed."
+fi
