@@ -1,3 +1,5 @@
+local utils = require("utils.index")
+
 local CInstruction = {}
 CInstruction.__index = CInstruction
 
@@ -23,12 +25,6 @@ function CInstruction.destination(self)
 	return splited[1]
 end
 
-function print_table(result)
-	for i, v in ipairs(result) do
-		print(i, v)
-	end
-end
-
 function CInstruction.comp(self)
 	local splited = split(self.instruction, "=")
 	local comp_and_jump = splited[1]
@@ -37,9 +33,9 @@ function CInstruction.comp(self)
 	end
 	local splited_by_semicolon = split(comp_and_jump, ";")
 	if #splited_by_semicolon <= 1 then
-		return splited[2]
+		return utils.trim(splited[2])
 	end
-	return splited_by_semicolon[1]
+	return utils.trim(splited_by_semicolon[1])
 end
 
 function CInstruction.jump(self)
@@ -52,7 +48,7 @@ function CInstruction.jump(self)
 	if #splited_by_semicolon <= 1 then
 		return nil
 	end
-	return splited_by_semicolon[2]
+	return utils.trim(splited_by_semicolon[2])
 end
 
 return CInstruction

@@ -1,6 +1,6 @@
 local SymbolTable = {
 	table = {
-		["SCREEN"] = 163384,
+		["SCREEN"] = 16384,
 		["KBD"] = 24576,
 		["SP"] = 0,
 		["LCL"] = 1,
@@ -25,6 +25,7 @@ function SymbolTable.get(self, key)
 	local value = self.table[key]
 	if not value then
 		value = self.next_empty_variable_spot
+                self.table[key] = value
 		self.next_empty_variable_spot = self.next_empty_variable_spot + 1
 	end
 	return value
